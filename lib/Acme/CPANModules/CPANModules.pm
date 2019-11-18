@@ -39,11 +39,34 @@ If you develop CPAN modules with Dist::Zilla, you can use
 blacklisted dependencies into your distribution.
 
 
-## Others
+## Other modules
 
 <pm:Acme::CPANLists> is an older, deprecated specification.
 
+<pm:Pod::From::Acme::CPANModules>
+
+
+## Snippets
+
+Acme::CPANModules::CPANModules contains this snippet to create entries by
+extracting `<pm:...>` in the description:
+
+    $LIST->{entries} = [
+        map { +{module=>$_} }
+            ($LIST->{description} =~ /<pm:(.+?)>/g)
+    ];
+
+This does not prevent duplicates. To do so:
+
+    $LIST->{entries} = [
+        map { +{module=>$_} }
+            do { my %seen; grep { !$seen{$_}++ }
+                 ($LIST->{description} =~ /<pm:(.+?)>/g)
+             }
+    ];
+
 _
+    'x.app.cpanmodules.show_entries' => 0,
 };
 
 $LIST->{entries} = [
