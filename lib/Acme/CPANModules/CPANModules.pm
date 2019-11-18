@@ -72,7 +72,7 @@ _
 $LIST->{entries} = [
     map { +{module=>$_} }
         do { my %seen; grep { !$seen{$_}++ }
-             ($LIST->{description} =~ /<pm:(.+?)>/g)
+             ($LIST->{description} =~ /<pm:(\w+(?:::\w+)*)>/g)
          }
 ];
 
